@@ -24,6 +24,7 @@ export default function Login() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
+      credentials: "include",
     });
 
     const data = await res.json();
@@ -32,8 +33,6 @@ export default function Login() {
       setCurrentUser({ id: data.user.id, username: data.user.username });
       router("/dashboard");
     }
-
-    console.log(data);
   }
 
   function passwordVisibility() {
