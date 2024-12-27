@@ -1,7 +1,7 @@
-import "./App.css";
 import { useState, useRef, useContext, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./contexts/UserContext";
+import Header from "./components/Header";
 
 export default function Login() {
   const { currentUser, isLoading, setCurrentUser } = useContext(UserContext);
@@ -43,46 +43,41 @@ export default function Login() {
   }
 
   return (
-    <>
-      <header>
-        <span>Upload File</span>
-      </header>
-      <main>
-        <h1>Upload File !</h1>
-        <h2>Login</h2>
-        <form method="POST" onSubmit={handleSubmit}>
-          <fieldset>
-            <label htmlFor="username">Username:</label>
-            <input
-              required
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              name="username"
-            />
-          </fieldset>
-          <fieldset>
-            <label htmlFor="password">Password:</label>
-            <input
-              required
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              name="password"
-              ref={passwordRef}
-            />
-            <small className="password-visibility" onClick={passwordVisibility}>
-              see password
-            </small>
-          </fieldset>
+    <main>
+      <h1>Upload File !</h1>
+      <h2>Login</h2>
+      <form method="POST" onSubmit={handleSubmit}>
+        <fieldset>
+          <label htmlFor="username">Username:</label>
+          <input
+            required
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            name="username"
+          />
+        </fieldset>
+        <fieldset>
+          <label htmlFor="password">Password:</label>
+          <input
+            required
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            ref={passwordRef}
+          />
+          <small className="password-visibility" onClick={passwordVisibility}>
+            see password
+          </small>
+        </fieldset>
 
-          <fieldset>
-            <input type="submit" />
-          </fieldset>
-        </form>
-      </main>
-    </>
+        <fieldset>
+          <input type="submit" />
+        </fieldset>
+      </form>
+    </main>
   );
 }

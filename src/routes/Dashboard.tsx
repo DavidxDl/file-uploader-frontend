@@ -1,6 +1,9 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import Main from "../components/Main";
+import Header from "../components/Header";
+import Files from "../components/Files";
 
 export default function Dashboard() {
   const { currentUser, isLoading } = useContext(UserContext);
@@ -18,8 +21,10 @@ export default function Dashboard() {
   }
 
   return (
-    <main>
-      <h1>Welcome {currentUser?.username}!</h1>
-    </main>
-  ); //;
+    <Main>
+      <h1 className="text-3xl mb-4">Welcome {currentUser?.username}!</h1>
+
+      <Files />
+    </Main>
+  );
 }
