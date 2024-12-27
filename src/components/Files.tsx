@@ -6,9 +6,37 @@ interface Folder {
   ownerId: string;
 }
 
+interface File {
+  id: string;
+  name: string;
+  created_at: string;
+}
+
 export default function Files() {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [selectedFolder, setSelectedFolder] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      console.log(selectedFolder);
+      if (selectedFolder) {
+        const res = await fetch(
+          `http://localhost:3000/folders/${selectedFolder}`,
+          {
+            credentials: "include",
+          },
+        );
+
+        const data = (await res.json()) as File[];
+
+        console.log(data);
+
+        setFiles(data);
+      }
+    }
+    getFiles();
+  }, [selectedFolder]);
 
   useEffect(() => {
     async function getFolders() {
@@ -37,10 +65,10 @@ export default function Files() {
       <div className="flex gap-2">
         {folders.map((f) => (
           <div
-            className={`p-5 rounded-xl cursor-pointer hover:bg-gray-950 ${selectedFolder === f.name ? "bg-gray-950" : "bg-gray-900"}`}
+            className={`p-5 rounded-xl cursor-pointer hover:bg-gray-950 ${selectedFolder === f.id ? "bg-gray-950" : "bg-gray-900"}`}
             key={f.id}
             onClick={() =>
-              setSelectedFolder(selectedFolder === f.name ? "" : f.name)
+              setSelectedFolder(selectedFolder === f.id ? "" : f.id)
             }
           >
             <span>{f.name}</span>
@@ -49,7 +77,10 @@ export default function Files() {
       </div>
       <div>
         <h2 className="text-xl font-bold">Files</h2>
-        {selectedFolder && <h2>{selectedFolder}</h2>}
+        {selectedFolder &&
+          files &&
+          files.map((f) => <div key={f.id}>{f.name}</div>)}
+        {selectedFolder && !files.length && <span>Empty folder!</span>}
       </div>
     </div>
   );
