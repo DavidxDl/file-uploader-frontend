@@ -2,6 +2,7 @@ import { useState, useRef, useContext, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./contexts/UserContext";
 import Header from "./components/Header";
+import Main from "./components/Main";
 
 export default function Login() {
   const { currentUser, isLoading, setCurrentUser } = useContext(UserContext);
@@ -12,7 +13,7 @@ export default function Login() {
   useEffect(() => {
     // Only redirect if loading is complete and user exists
     if (!isLoading && currentUser) {
-      router("/dashboard");
+      router("/");
     }
   }, [currentUser, isLoading, router]);
 
@@ -31,7 +32,7 @@ export default function Login() {
 
     if (data.success) {
       setCurrentUser({ id: data.user.id, username: data.user.username });
-      router("/dashboard");
+      router("/");
     }
   }
 
@@ -43,13 +44,17 @@ export default function Login() {
   }
 
   return (
-    <main>
-      <h1>Upload File !</h1>
-      <h2>Login</h2>
-      <form method="POST" onSubmit={handleSubmit}>
-        <fieldset>
+    <Main>
+      <h2 className="text-2xl font-bold">Login</h2>
+      <form
+        method="POST"
+        className="min-h-80 w-full max-w-xl flex flex-col items-center justify-center border border-green-500 rounded-md px-10"
+        onSubmit={handleSubmit}
+      >
+        <fieldset className="flex flex-col">
           <label htmlFor="username">Username:</label>
           <input
+            className="bg-white rounded-md px-2 text-sm text-black"
             required
             type="text"
             id="username"
@@ -58,9 +63,10 @@ export default function Login() {
             name="username"
           />
         </fieldset>
-        <fieldset>
+        <fieldset className="flex flex-col">
           <label htmlFor="password">Password:</label>
           <input
+            className="bg-white rounded-md px-2 text-black text-sm"
             required
             type="password"
             id="password"
@@ -69,15 +75,18 @@ export default function Login() {
             name="password"
             ref={passwordRef}
           />
-          <small className="password-visibility" onClick={passwordVisibility}>
+          <small
+            className="cursor-pointer password-visibility"
+            onClick={passwordVisibility}
+          >
             see password
           </small>
         </fieldset>
 
         <fieldset>
-          <input type="submit" />
+          <button className="text-sm mt-2">Log in</button>
         </fieldset>
       </form>
-    </main>
+    </Main>
   );
 }
