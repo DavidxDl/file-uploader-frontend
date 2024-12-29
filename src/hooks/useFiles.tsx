@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { File } from "../components/Files";
 
-export default function useFiles(selectedFolder: string) {
+export default function useFiles(selectedFolder: string): [File[], boolean] {
   const [isLoadingFiles, setIsLoadingFiles] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
 

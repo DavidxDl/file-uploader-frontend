@@ -1,14 +1,15 @@
-import { useEffect, Suspense, useState } from "react";
+import { useState } from "react";
 import useFiles from "../hooks/useFiles";
 import useFolders from "../hooks/useFolders";
+import FolderIcon from "./FolderIcon";
 
-interface Folder {
+export interface Folder {
   id: string;
   name: string;
   ownerId: string;
 }
 
-interface File {
+export interface File {
   id: string;
   name: string;
   metadata: { signedUrl: string };
@@ -31,7 +32,7 @@ export default function Files() {
         {!isLoadingFolders &&
           folders.map((f) => (
             <div
-              className={`p-5 rounded-xl cursor-pointer hover:bg-green-400 ${
+              className={`flex p-5 rounded-xl cursor-pointer hover:bg-green-400 ${
                 selectedFolder === f.id ? "bg-green-500" : "bg-gray-700"
               }`}
               key={f.id}
@@ -39,6 +40,7 @@ export default function Files() {
                 setSelectedFolder(selectedFolder === f.id ? "" : f.id)
               }
             >
+              <FolderIcon />
               <span>{f.name}</span>
             </div>
           ))}

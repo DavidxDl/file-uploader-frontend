@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Folder } from "../components/Files";
 
-export default function useFolders() {
+export default function useFolders(): [Folder[], boolean] {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [isLoadingFolders, setIsLoadingFolders] = useState(false);
 
