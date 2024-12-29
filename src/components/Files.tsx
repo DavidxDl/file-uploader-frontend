@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, Suspense, useState } from "react";
 
 interface Folder {
   id: string;
@@ -9,6 +9,7 @@ interface Folder {
 interface File {
   id: string;
   name: string;
+  metadata: { signedUrl: string };
   created_at: string;
 }
 
@@ -25,12 +26,13 @@ export default function Files() {
           `http://localhost:3000/folders/${selectedFolder}`,
           {
             credentials: "include",
-          },
+          }
         );
 
         const data = (await res.json()) as File[];
 
         console.log(data);
+        console.log(`signedUrl: ${data[0].metadata.signedUrl}`);
 
         setFiles(data);
       }
@@ -58,14 +60,16 @@ export default function Files() {
   }, []);
   return (
     <div className="border border-white min-w-80 p-7">
-      <div className="flex justify-between p-2 items-center">
+      <div className="flex justify-between p-1 items-center">
         <h2 className="text-xl font-bold">Folders</h2>
         <button>+</button>
       </div>
       <div className="flex gap-2">
         {folders.map((f) => (
           <div
-            className={`p-5 rounded-xl cursor-pointer hover:bg-gray-950 ${selectedFolder === f.id ? "bg-gray-950" : "bg-gray-900"}`}
+            className={`p-5 rounded-xl cursor-pointer hover:bg-gray-950 ${
+              selectedFolder === f.id ? "bg-gray-950" : "bg-gray-900"
+            }`}
             key={f.id}
             onClick={() =>
               setSelectedFolder(selectedFolder === f.id ? "" : f.id)
@@ -76,10 +80,21 @@ export default function Files() {
         ))}
       </div>
       <div>
-        <h2 className="text-xl font-bold">Files</h2>
-        {selectedFolder &&
-          files &&
-          files.map((f) => <div key={f.id}>{f.name}</div>)}
+        <div className="flex p-1 items-center justify-between">
+          <h2 className="text-xl font-bold">Files</h2>
+          <button>+</button>
+        </div>
+        <Suspense fallback={<span>Loading...</span>}>
+          {selectedFolder &&
+            files &&
+            files.map((f) => (
+              <div>
+                <a href={f.metadata.signedUrl} key={f.id} target="_blank">
+                  {f.name}
+                </a>
+              </div>
+            ))}
+        </Suspense>
         {selectedFolder && !files.length && <span>Empty folder!</span>}
       </div>
     </div>
