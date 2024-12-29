@@ -1,4 +1,6 @@
 import { useEffect, Suspense, useState } from "react";
+import useFiles from "../hooks/useFiles";
+import useFolders from "../hooks/useFolders";
 
 interface Folder {
   id: string;
@@ -14,50 +16,10 @@ interface File {
 }
 
 export default function Files() {
-  const [folders, setFolders] = useState<Folder[]>([]);
   const [selectedFolder, setSelectedFolder] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
+  const [folders, isLoadingFolders] = useFolders();
+  const [files, isLoadingFiles] = useFiles(selectedFolder);
 
-  useEffect(() => {
-    async function getFiles() {
-      console.log(selectedFolder);
-      if (selectedFolder) {
-        const res = await fetch(
-          `http://localhost:3000/folders/${selectedFolder}`,
-          {
-            credentials: "include",
-          }
-        );
-
-        const data = (await res.json()) as File[];
-
-        console.log(data);
-        console.log(`signedUrl: ${data[0].metadata.signedUrl}`);
-
-        setFiles(data);
-      }
-    }
-    getFiles();
-  }, [selectedFolder]);
-
-  useEffect(() => {
-    async function getFolders() {
-      try {
-        const res = await fetch("http://localhost:3000/folders", {
-          credentials: "include",
-        });
-
-        const data = (await res.json()) as Folder[];
-        console.log(data);
-
-        setFolders(data);
-      } catch (err) {
-        console.error("Error trying to fetch for folders", err);
-      }
-    }
-
-    getFolders();
-  }, []);
   return (
     <div className="border border-white min-w-80 p-7">
       <div className="flex justify-between p-1 items-center">
@@ -65,37 +27,40 @@ export default function Files() {
         <button>+</button>
       </div>
       <div className="flex gap-2">
-        {folders.map((f) => (
-          <div
-            className={`p-5 rounded-xl cursor-pointer hover:bg-gray-950 ${
-              selectedFolder === f.id ? "bg-gray-950" : "bg-gray-900"
-            }`}
-            key={f.id}
-            onClick={() =>
-              setSelectedFolder(selectedFolder === f.id ? "" : f.id)
-            }
-          >
-            <span>{f.name}</span>
-          </div>
-        ))}
+        {isLoadingFolders && <div>Loading...</div>}
+        {!isLoadingFolders &&
+          folders.map((f) => (
+            <div
+              className={`p-5 rounded-xl cursor-pointer hover:bg-green-400 ${
+                selectedFolder === f.id ? "bg-green-500" : "bg-gray-700"
+              }`}
+              key={f.id}
+              onClick={() =>
+                setSelectedFolder(selectedFolder === f.id ? "" : f.id)
+              }
+            >
+              <span>{f.name}</span>
+            </div>
+          ))}
       </div>
       <div>
         <div className="flex p-1 items-center justify-between">
           <h2 className="text-xl font-bold">Files</h2>
           <button>+</button>
         </div>
-        <Suspense fallback={<span>Loading...</span>}>
-          {selectedFolder &&
-            files &&
-            files.map((f) => (
-              <div>
-                <a href={f.metadata.signedUrl} key={f.id} target="_blank">
-                  {f.name}
-                </a>
-              </div>
-            ))}
-        </Suspense>
-        {selectedFolder && !files.length && <span>Empty folder!</span>}
+        {isLoadingFiles && <div>Loading...</div>}
+        {!isLoadingFiles &&
+          selectedFolder &&
+          files.map((f) => (
+            <div>
+              <a href={f.metadata.signedUrl} key={f.id} target="_blank">
+                {f.name}
+              </a>
+            </div>
+          ))}
+        {!isLoadingFiles && selectedFolder && !files.length && (
+          <span>Empty folder!</span>
+        )}
       </div>
     </div>
   );
