@@ -1,8 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./Login";
+import Login from "./routes/Login";
 import Dashboard from "./routes/Dashboard";
 import { UserProvider } from "./contexts/UserContext";
 import Header from "./components/Header";
+import SignUp from "./routes/SignUp";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -14,6 +15,11 @@ export default function App() {
     {
       path: "/",
       element: <Dashboard />,
+    },
+
+    {
+      path: "/sign-up",
+      element: <SignUp />,
     },
   ]);
 

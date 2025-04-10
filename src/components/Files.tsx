@@ -23,7 +23,7 @@ export default function Files() {
   const [files, isLoadingFiles] = useFiles(selectedFolder);
 
   return (
-    <div className="border border-white w-full max-w-4xl rounded-md p-7">
+    <div className="border border-green-500 w-full max-w-4xl rounded-md p-7">
       <div className="flex justify-between p-1 items-center">
         <h2 className="text-xl font-bold">Folders</h2>
         <ButtonModal buttonText="+">
@@ -55,13 +55,20 @@ export default function Files() {
             >
               <FolderIcon />
               <span>{f.name}</span>
+              <ButtonModal buttonText=":" className="text-xs  ">
+                <ul>
+                  <li>
+                    <a href="#">remove</a>
+                  </li>
+                </ul>
+              </ButtonModal>
             </div>
           ))}
       </div>
       <div>
         <div className="flex p-1 items-center justify-between">
           <h2 className="text-xl font-bold">Files</h2>
-          <ButtonModal buttonText="+">
+          <ButtonModal className="left-0" buttonText="+">
             <form>
               <fieldset>
                 <label htmlFor="file">File:</label>
