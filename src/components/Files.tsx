@@ -189,6 +189,7 @@ export default function Files() {
           </div>
         )}
       </dialog>
+    <div className="border border-green-500 w-full max-w-4xl rounded-md p-7">
       <div className="flex justify-between p-1 items-center">
         <h2 className="text-xl font-bold">Folders</h2>
         <div className="flex gap-2">
@@ -240,6 +241,13 @@ export default function Files() {
                   </ul>
                 </Options>
               )}
+              <ButtonModal buttonText=":" className="text-xs  ">
+                <ul>
+                  <li>
+                    <a href="#">remove</a>
+                  </li>
+                </ul>
+              </ButtonModal>
             </div>
           ))}
       </div>
@@ -252,6 +260,27 @@ export default function Files() {
               <FileForm folders={folders} />
             </ButtonModal>
           </div>
+          <ButtonModal className="left-0" buttonText="+">
+            <form>
+              <fieldset>
+                <label htmlFor="file">File:</label>
+                <input type="file" name="file" id="file" />
+              </fieldset>
+              <fieldset className="flex flex-col">
+                <label htmlFor="folder">Folder:</label>
+                <select
+                  name="folder"
+                  id="folder"
+                  className="bg-gray-700 rounded-md py-1 text-white"
+                >
+                  {folders.map((f) => (
+                    <option value={f.name}>{f.name}</option>
+                  ))}
+                </select>
+                <button className="mt-2">Upload</button>
+              </fieldset>
+            </form>
+          </ButtonModal>
         </div>
         {isLoadingFiles && <div>Loading...</div>}
         {!isLoadingFiles && selectedFolder && !files.length && (

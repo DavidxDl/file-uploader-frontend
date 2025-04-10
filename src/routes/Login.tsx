@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./contexts/UserContext";
 import { Eye, EyeOff, Upload, Lock, User } from "lucide-react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function Login() {
   const { currentUser, isLoading, setCurrentUser } = useContext(UserContext);
@@ -42,7 +42,7 @@ export default function Login() {
         setError(data.message || "Login failed");
       }
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again." + err);
     } finally {
       setIsSubmitting(false);
     }
