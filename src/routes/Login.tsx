@@ -40,7 +40,7 @@ export default function Login() {
   return (
     <Main>
       <Form title="Login" onSubmit={handleSubmit}>
-        <fieldset className="flex  w-[56%]">
+        <fieldset className="flex shadow  w-[56%]">
           <label
             className="bg-stone-900 rounded-l-md py-1 px-2"
             htmlFor="username"
@@ -57,7 +57,7 @@ export default function Login() {
             name="username"
           />
         </fieldset>
-        <fieldset className="flex  w-[56%]">
+        <fieldset className="flex shadow  w-[56%]">
           <label
             className="bg-stone-900 rounded-l-md py-1 px-2"
             htmlFor="password"
@@ -65,7 +65,7 @@ export default function Login() {
             🔒
           </label>
           <input
-            className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-r-md px-2  text-sm"
+            className="flex-1  focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-r-md px-2  text-sm"
             required
             type="password"
             id="password"
