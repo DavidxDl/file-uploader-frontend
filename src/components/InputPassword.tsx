@@ -8,17 +8,10 @@ interface Props {
 
 export default function InputPassword({ password, name, setPassword }: Props) {
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
-  function passwordVisibility() {
-    if (passwordRef.current) {
-      passwordRef.current.type =
-        passwordRef.current?.type === "password" ? "text" : "password";
-    }
-  }
   return (
     <>
       <input
-        className="bg-white rounded-md px-2 text-black text-sm"
+        className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-r-md px-2  text-sm"
         required
         type="password"
         id="password"
@@ -27,12 +20,6 @@ export default function InputPassword({ password, name, setPassword }: Props) {
         name={name}
         ref={passwordRef}
       />
-      <small
-        className="cursor-pointer password-visibility"
-        onClick={passwordVisibility}
-      >
-        see password
-      </small>
     </>
   );
 }
