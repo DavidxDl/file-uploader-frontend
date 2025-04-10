@@ -64,10 +64,14 @@ export default function Login() {
           >
             🔒
           </label>
-          <InputPassword
+          <input
+            className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-r-md px-2  text-sm"
+            required
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             name="password"
-            password={password}
-            setPassword={setPassword}
           />
         </fieldset>
 

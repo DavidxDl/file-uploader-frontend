@@ -59,24 +59,32 @@ export default function Register() {
             id="username"
             value={username}
             onChange={(e) => setUsername((u) => e.target.value)}
-            className="valid:outline-1 outline-green-500 bg-white rounded-md px-2 text-sm text-black"
+            className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 p-1 rounded-md valid:outline-1  px-2 text-sm "
             required
           />
         </fieldset>
         <fieldset className="flex flex-col">
           <label htmlFor="password">Password:</label>
-          <InputPassword
-            name={"password"}
-            password={password}
-            setPassword={setPassword}
+          <input
+            className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-md px-2 py-1  text-sm"
+            required
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
           />
         </fieldset>
         <fieldset className="flex flex-col">
           <label htmlFor="repeat-password">Repeat Password:</label>
-          <InputPassword
+          <input
+            className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-md px-2 py-1  text-sm"
+            required
+            type="password"
+            id="repeat_password"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
             name="repeat_password"
-            password={repeatPassword}
-            setPassword={setRepeatPassword}
           />
         </fieldset>
         <ul>
