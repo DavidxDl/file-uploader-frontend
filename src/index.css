@@ -65,3 +65,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.menu {
+  animation-name: Slide-in;
+  animation-duration: 250ms;
+}
+
+@keyframes Slide-in {
+  0% {
+    transform: translateX(2000px);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
