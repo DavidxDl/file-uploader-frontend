@@ -70,6 +70,7 @@ export default function Register() {
             required
             type="password"
             id="password"
+            minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             name="password"
@@ -80,6 +81,7 @@ export default function Register() {
           <input
             className="flex-1 focus:outline focus:outline-2 focus:outline-green-500 bg-stone-800 rounded-md px-2 py-1  text-sm"
             required
+            minLength={8}
             type="password"
             id="repeat_password"
             value={repeatPassword}
