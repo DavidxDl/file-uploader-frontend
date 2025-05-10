@@ -1,7 +1,6 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import Main from "../components/Main";
 import Form from "../components/Form";
-import InputPassword from "../components/InputPassword";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
@@ -43,9 +42,6 @@ export default function Register() {
       return console.error(error);
     } finally {
       setIsLoading(false);
-      if (data.errors) {
-        setErrors(data.errors);
-      }
     }
   }
   return (
