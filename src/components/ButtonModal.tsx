@@ -1,12 +1,17 @@
 import { useState } from "react";
 
 interface Props {
+  shouldShow?: boolean;
   buttonText: string;
   children: React.ReactNode;
 }
 
-export default function ButtonModal({ buttonText, children }: Props) {
-  const [show, setShow] = useState(false);
+export default function ButtonModal({
+  shouldShow = false,
+  buttonText,
+  children,
+}: Props) {
+  const [show, setShow] = useState(shouldShow);
 
   return (
     <div className="relative">
