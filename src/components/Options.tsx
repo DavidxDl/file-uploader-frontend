@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
+import "../index.css";
 
 interface Props {
   shouldShow?: boolean;
   buttonText: string;
-  className?: string;
+  className: string;
   children: React.ReactNode;
 }
 
-export default function ButtonModal({
+export default function Options({
   shouldShow = false,
   className,
   buttonText,
@@ -15,6 +16,12 @@ export default function ButtonModal({
 }: Props) {
   const [show, setShow] = useState(shouldShow);
   const dropdownRef = useRef<null | HTMLDivElement>(null);
+  const position = useRef<{ position: null | DOMRect }>({ position: null });
+
+  function onClick(e: React.EventHandler) {
+    setShow((s) => !s);
+    position.current.position = e.currentTarget.getBoundingClientRect();
+  }
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -27,14 +34,14 @@ export default function ButtonModal({
   }, [show]);
 
   return (
-    <div className="relative">
-      <button className={className} onClick={() => setShow((s) => !s)}>
+    <div className="cursor-default ">
+      <button className={className} onClick={onClick}>
         {buttonText}
       </button>
       {show && (
         <div
           ref={dropdownRef}
-          className="shadow z-50  absolute top-0 right-[-10px]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg p-5"
+          className={`shadow z-50 roll overflow-y-hidden  absolute  left-[${position.current.position.left + window.scrollX}] top-[${position.current.position.bottom + window.scrollY}]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg`}
         >
           {children}
           <div className="w-full flex items-center justify-center">

@@ -4,6 +4,7 @@ import useFolders from "../hooks/useFolders";
 import FolderIcon from "./FolderIcon";
 import ButtonModal from "./ButtonModal";
 import FolderForm from "./forms/folderForm";
+import Options from "./Options";
 
 export interface Folder {
   id: string;
@@ -23,6 +24,23 @@ export default function Files() {
   const [folders, isLoadingFolders, refreshFolders] = useFolders();
   const [files, isLoadingFiles, refreshFiles] = useFiles(selectedFolder);
 
+  async function deleteFolder(folderId: string, folderName: string) {
+    try {
+      const res = await fetch(`http://localhost:3000/folders/delete`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ folderId, folderName }),
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (data.success) refreshFolders();
+    } catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <div className="border border-white w-full max-w-4xl rounded-md p-7">
       <div className="flex justify-between p-1 items-center">
@@ -31,7 +49,7 @@ export default function Files() {
           <FolderForm refreshFolders={refreshFolders} />
         </ButtonModal>
       </div>
-      <div className="flex gap-2 max-w-full max-h-[200px] overflow-y-auto flex-wrap">
+      <div className="flex align-middle gap-2 max-w-full max-h-[200px] overflow-y-auto flex-wrap">
         {isLoadingFolders && <div>Loading...</div>}
         {!isLoadingFolders &&
           folders.map((f) => (
@@ -46,6 +64,26 @@ export default function Files() {
             >
               <FolderIcon />
               <span>{f.name}</span>
+              <Options
+                className="size-5 text-[.8rem] leading-[.3rem] ml-1 p-0 text-center"
+                buttonText=":"
+              >
+                <ul>
+                  <li
+                    className="hover:bg-red-600 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
+                    onClick={() =>
+                      confirm(`you want to delete folder: ${f.name}`) &&
+                      deleteFolder(f.id, f.name)
+                    }
+                  >
+                    Delete
+                  </li>
+
+                  <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
+                    Rename
+                  </li>
+                </ul>
+              </Options>
             </div>
           ))}
       </div>
@@ -60,7 +98,7 @@ export default function Files() {
             >
               <fieldset>
                 <label htmlFor="file">File:</label>
-                <input type="file" name="file" id="file" />
+                <input type="file" name="file" id="file" required />
               </fieldset>
               <fieldset className="flex flex-col">
                 <label htmlFor="folder">Folder:</label>
@@ -68,6 +106,7 @@ export default function Files() {
                   name="folder"
                   id="folder"
                   className="bg-gray-700 rounded-md py-1 text-white"
+                  required
                 >
                   {folders.map((f) => (
                     <option value={f.name}>{f.name}</option>
