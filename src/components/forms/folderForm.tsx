@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Folder } from "../Files";
 
 interface Props {
-  refreshFolders: () => void;
+  setFolders: Dispatch<SetStateAction<Folder[]>>;
+  folders: Folder[];
 }
 
-export default function FolderForm({ closeForm, refreshFolders }: Props) {
+export default function FolderForm({ setFolders, folders }: Props) {
   const [folderName, setFolderName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,7 +29,7 @@ export default function FolderForm({ closeForm, refreshFolders }: Props) {
 
       if (data?.success) {
         setIsLoading(false);
-        refreshFolders();
+        setFolders([...folders, data.folder]);
         setFolderName("");
       }
     } catch (err) {

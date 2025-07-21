@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Folder } from "../components/Files";
 
-export default function useFolders(): [Folder[], boolean, () => void] {
+export default function useFolders(): [
+  Folder[],
+  Dispatch<SetStateAction<Folder[]>>,
+  boolean,
+] {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [isLoadingFolders, setIsLoadingFolders] = useState(false);
 
@@ -22,12 +26,9 @@ export default function useFolders(): [Folder[], boolean, () => void] {
       console.error("Error trying to fetch for folders", err);
     }
   }
-  async function refreshFolders() {
-    getFolders();
-  }
 
   useEffect(() => {
     getFolders();
   }, []);
-  return [folders, isLoadingFolders, refreshFolders];
+  return [folders, setFolders, isLoadingFolders];
 }

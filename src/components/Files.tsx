@@ -5,6 +5,7 @@ import FolderIcon from "./FolderIcon";
 import ButtonModal from "./ButtonModal";
 import FolderForm from "./forms/folderForm";
 import Options from "./Options";
+import RenameFolderForm from "./forms/RenameFolderForm";
 
 export interface Folder {
   id: string;
@@ -21,7 +22,7 @@ export interface File {
 
 export default function Files() {
   const [selectedFolder, setSelectedFolder] = useState("");
-  const [folders, isLoadingFolders, refreshFolders] = useFolders();
+  const [folders, setFolders, isLoadingFolders] = useFolders();
   const [files, isLoadingFiles, refreshFiles] = useFiles(selectedFolder);
 
   async function deleteFolder(folderId: string, folderName: string) {
@@ -36,7 +37,9 @@ export default function Files() {
       });
       const data = await res.json();
 
-      if (data.success) refreshFolders();
+      if (data.success) {
+        setFolders(folders.filter((f) => f.id !== folderId));
+      }
     } catch (err) {
       console.error(err);
     }
@@ -45,9 +48,15 @@ export default function Files() {
     <div className="border border-white w-full max-w-4xl rounded-md p-7">
       <div className="flex justify-between p-1 items-center">
         <h2 className="text-xl font-bold">Folders</h2>
-        <ButtonModal buttonText="Create Folder">
-          <FolderForm refreshFolders={refreshFolders} />
-        </ButtonModal>
+        <div className="flex gap-2">
+          <ButtonModal buttonText="Rename Folder">
+            <RenameFolderForm folders={folders} setFolders={setFolders} />
+          </ButtonModal>
+
+          <ButtonModal buttonText="Create Folder">
+            <FolderForm setFolders={setFolders} folders={folders} />
+          </ButtonModal>
+        </div>
       </div>
       <div className="flex align-middle gap-2 max-w-full max-h-[200px] overflow-y-auto flex-wrap">
         {isLoadingFolders && <div>Loading...</div>}
@@ -66,7 +75,7 @@ export default function Files() {
               <span>{f.name}</span>
               <Options
                 className="size-5 text-[.8rem] leading-[.3rem] ml-1 p-0 text-center"
-                buttonText=":"
+                buttonText="⋮"
               >
                 <ul>
                   <li
@@ -109,7 +118,9 @@ export default function Files() {
                   required
                 >
                   {folders.map((f) => (
-                    <option value={f.name}>{f.name}</option>
+                    <option key={f.id} value={f.name}>
+                      {f.name}
+                    </option>
                   ))}
                 </select>
                 <button className="mt-2">Upload</button>
