@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useFiles from "../hooks/useFiles";
 import useFolders from "../hooks/useFolders";
 import FolderIcon from "./FolderIcon";
@@ -16,14 +16,16 @@ export interface Folder {
 export interface File {
   id: string;
   name: string;
-  metadata: { signedUrl: string };
+  metadata: { signedUrl: string; mimetype: string };
   created_at: string;
 }
 
 export default function Files() {
   const [selectedFolder, setSelectedFolder] = useState("");
   const [folders, setFolders, isLoadingFolders] = useFolders();
-  const [files, isLoadingFiles, refreshFiles] = useFiles(selectedFolder);
+  const [files, setFiles, isLoadingFiles] = useFiles(selectedFolder);
+  const [showImagePreview, setShowImagePreview] = useState("");
+  const previewRef = useRef<null | HTMLDialogElement>(null);
 
   async function deleteFolder(folderId: string, folderName: string) {
     try {
@@ -44,8 +46,48 @@ export default function Files() {
       console.error(err);
     }
   }
+
+  async function deleteFile(
+    fileId: string,
+    fileName: string,
+    folderId: string,
+  ) {
+    try {
+      const folderName = folders.find((f) => f.id === folderId)?.name;
+      const res = await fetch(`http://localhost:3000/files/delete`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fileId, fileName, folderName }),
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      console.log(data);
+      if (data.success) {
+        console.log("succsess!!:w");
+        setFiles(files.filter((f) => f.id !== fileId));
+        console.log(files);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <div className="border border-white w-full max-w-4xl rounded-md p-7">
+      <dialog ref={previewRef} className="z-50 ">
+        <button
+          className="bg-red-600"
+          onClick={() => {
+            setShowImagePreview("");
+            if (previewRef.current) previewRef.current.open = false;
+          }}
+        >
+          X
+        </button>
+        <img src={showImagePreview} alt="" />
+      </dialog>
       <div className="flex justify-between p-1 items-center">
         <h2 className="text-xl font-bold">Folders</h2>
         <div className="flex gap-2">
@@ -88,9 +130,11 @@ export default function Files() {
                     Delete
                   </li>
 
-                  <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
-                    Rename
-                  </li>
+                  {
+                    <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
+                      Rename
+                    </li>
+                  }
                 </ul>
               </Options>
             </div>
@@ -135,10 +179,41 @@ export default function Files() {
         {!isLoadingFiles &&
           selectedFolder &&
           files.map((f) => (
-            <div>
-              <a href={f.metadata.signedUrl} key={f.id} target="_blank">
+            <div key={f.id} className="flex ">
+              <a
+                href={f.metadata.signedUrl}
+                className="max-w-48 overflow-ellipsis overflow-x-hidden block"
+                target="_blank"
+              >
                 {f.name}
               </a>
+              <Options
+                className="size-5 text-[.8rem] leading-[.3rem] ml-1 p-0 text-center"
+                buttonText="⋮"
+              >
+                <ul>
+                  <li
+                    className="hover:bg-red-600 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
+                    onClick={() =>
+                      confirm(`you want to delete file: ${f.name}`) &&
+                      deleteFile(f.id, f.name, selectedFolder)
+                    }
+                  >
+                    Delete
+                  </li>
+                  {f.metadata.mimetype.startsWith("image") && (
+                    <li
+                      className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
+                      onClick={() => {
+                        setShowImagePreview(f.metadata.signedUrl);
+                        if (previewRef.current) previewRef.current.open = true;
+                      }}
+                    >
+                      Preview
+                    </li>
+                  )}
+                </ul>
+              </Options>
             </div>
           ))}
       </div>

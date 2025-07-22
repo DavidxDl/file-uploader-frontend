@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "../index.css";
 
 interface Props {
   shouldShow?: boolean;
@@ -34,7 +35,7 @@ export default function ButtonModal({
       {show && (
         <div
           ref={dropdownRef}
-          className="shadow z-50  absolute top-0 right-[-10px]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg p-5"
+          className="shadow roll z-50  absolute top-0 right-[-10px]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg p-5"
         >
           {children}
           <div className="w-full flex items-center justify-center">

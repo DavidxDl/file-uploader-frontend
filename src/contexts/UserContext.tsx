@@ -38,7 +38,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (data) {
           setCurrentUser({

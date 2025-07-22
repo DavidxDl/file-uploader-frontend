@@ -41,7 +41,7 @@ export default function Options({
       {show && (
         <div
           ref={dropdownRef}
-          className={`shadow z-50 roll overflow-y-hidden  absolute  left-[${position.current.position.left + window.scrollX}] top-[${position.current.position.bottom + window.scrollY}]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg`}
+          className={`shadow z-40 roll overflow-y-hidden  absolute  left-[${position.current.position.left + window.scrollX}] top-[${position.current.position.bottom + window.scrollY}]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg`}
         >
           {children}
           <div className="w-full flex items-center justify-center">
