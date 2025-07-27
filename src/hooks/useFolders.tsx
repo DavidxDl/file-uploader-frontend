@@ -11,7 +11,7 @@ export default function useFolders(): [
 
   async function getFolders() {
     try {
-      setIsLoadingFolders((l) => true);
+      setIsLoadingFolders(true);
       const res = await fetch("http://localhost:3000/folders", {
         credentials: "include",
       });
@@ -19,10 +19,10 @@ export default function useFolders(): [
       const data = (await res.json()) as Folder[];
       console.log(data);
 
-      setIsLoadingFolders((l) => false);
+      setIsLoadingFolders(false);
       setFolders([...data, { id: "SHARE", name: "SHARE", ownerId: "" }]);
     } catch (err) {
-      setIsLoadingFolders((l) => false);
+      setIsLoadingFolders(false);
       console.error("Error trying to fetch for folders", err);
     }
   }

@@ -18,7 +18,7 @@ export default function ButtonModal({
   const dropdownRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShow(false);
       }

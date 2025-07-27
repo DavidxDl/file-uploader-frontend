@@ -18,7 +18,7 @@ export default function Options({
   const dropdownRef = useRef<null | HTMLDivElement>(null);
   const position = useRef<{ position: null | DOMRect }>({ position: null });
 
-  function onClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function onClick(e: React.MouseEvent<HTMLButtonElement>) {
     setShow((s) => !s);
     position.current.position = e.currentTarget.getBoundingClientRect();
   }
