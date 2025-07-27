@@ -29,7 +29,10 @@ export default function ButtonModal({
 
   return (
     <div className="relative">
-      <button className={className} onClick={() => setShow((s) => !s)}>
+      <button
+        className={`text-xs md:text-lg ${className}`}
+        onClick={() => setShow((s) => !s)}
+      >
         {buttonText}
       </button>
       {show && (

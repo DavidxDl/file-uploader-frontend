@@ -20,7 +20,7 @@ export default function useFolders(): [
       console.log(data);
 
       setIsLoadingFolders((l) => false);
-      setFolders(data);
+      setFolders([...data, { id: "SHARE", name: "SHARE", ownerId: "" }]);
     } catch (err) {
       setIsLoadingFolders((l) => false);
       console.error("Error trying to fetch for folders", err);
