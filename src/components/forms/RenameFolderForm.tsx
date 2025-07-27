@@ -19,7 +19,7 @@ export default function RenameFolderForm({ folders, setFolders }: Props) {
       console.log(`folderId = ${folderId} folderName = ${folderName}`);
       if (!folderId) return;
       setIsLoading(true);
-      const res = await fetch("http://localhost:3000/folders/rename", {
+      const res = await fetch(`${process.env.BACKEND}/folders/rename`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -12,7 +12,7 @@ export default function useFolders(): [
   async function getFolders() {
     try {
       setIsLoadingFolders(true);
-      const res = await fetch("http://localhost:3000/folders", {
+      const res = await fetch(`${process.env.BACKEND}/folders`, {
         credentials: "include",
       });
 

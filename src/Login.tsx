@@ -18,7 +18,7 @@ export default function Login() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const res = await fetch("http://localhost:3000/login", {
+    const res = await fetch(`${process.env.BACKEND}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

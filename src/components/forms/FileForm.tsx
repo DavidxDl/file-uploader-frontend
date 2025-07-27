@@ -12,8 +12,8 @@ export default function FileForm({ folders }: Props) {
       method="post"
       action={
         selectedFolder === "SHARE"
-          ? "http://localhost:3000/share/new"
-          : "http://localhost:3000/files/new"
+          ? `${process.env.BACKEND}/share/new`
+          : `${process.env.BACKEND}/files/new`
       }
       encType="multipart/form-data"
     >

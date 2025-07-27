@@ -31,7 +31,7 @@ export default function Files() {
 
   async function deleteFolder(folderId: string, folderName: string) {
     try {
-      const res = await fetch(`http://localhost:3000/folders/delete`, {
+      const res = await fetch(`${process.env.BACKEND}/folders/delete`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export default function Files() {
 
   async function shareFile(folderId: string, fileName: string) {
     try {
-      const res = await fetch("http://localhost:3000/files/share", {
+      const res = await fetch(`${process.env.BACKEND}/files/share`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export default function Files() {
   ) {
     try {
       if (selectedFolder === "SHARE") {
-        const res = await fetch(`http://localhost:3000/share/delete`, {
+        const res = await fetch(`${process.env.BACKEND}/share/delete`, {
           method: "post",
           headers: {
             "Content-Type": "application/json",
@@ -101,7 +101,7 @@ export default function Files() {
         return;
       }
       const folderName = folders.find((f) => f.id === folderId)?.name;
-      const res = await fetch(`http://localhost:3000/files/delete`, {
+      const res = await fetch(`${process.env.BACKEND}/files/delete`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

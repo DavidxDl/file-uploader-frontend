@@ -14,7 +14,7 @@ export default function FolderForm({ setFolders, folders }: Props) {
     try {
       e.preventDefault();
       setIsLoading(true);
-      const res = await fetch("http://localhost:3000/folders/new", {
+      const res = await fetch(`${process.env.BACKEND}/folders/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

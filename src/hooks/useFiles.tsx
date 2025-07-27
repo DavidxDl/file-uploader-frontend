@@ -14,7 +14,7 @@ export default function useFiles(
       setIsLoadingFiles(true);
       if (selectedFolder !== "SHARE") {
         const res = await fetch(
-          `http://localhost:3000/folders/${selectedFolder}`,
+          `${process.env.BACKEND}/folders/${selectedFolder}`,
           {
             credentials: "include",
           },
@@ -28,7 +28,7 @@ export default function useFiles(
         setFiles(data);
       } else {
         //getting shared files
-        const res = await fetch(`http://localhost:3000/share`, {
+        const res = await fetch(`${process.env.BACKEND}/share`, {
           credentials: "include",
         });
 
