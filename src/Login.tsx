@@ -1,7 +1,6 @@
 import { useState, useRef, useContext, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./contexts/UserContext";
-import Header from "./components/Header";
 import Main from "./components/Main";
 
 export default function Login() {

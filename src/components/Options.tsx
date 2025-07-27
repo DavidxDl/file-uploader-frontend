@@ -18,13 +18,13 @@ export default function Options({
   const dropdownRef = useRef<null | HTMLDivElement>(null);
   const position = useRef<{ position: null | DOMRect }>({ position: null });
 
-  function onClick(e: React.EventHandler) {
+  function onClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     setShow((s) => !s);
     position.current.position = e.currentTarget.getBoundingClientRect();
   }
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShow(false);
       }
@@ -38,7 +38,7 @@ export default function Options({
       <button className={className} onClick={onClick}>
         {buttonText}
       </button>
-      {show && (
+      {show && position.current.position && (
         <div
           ref={dropdownRef}
           className={`shadow z-40 roll overflow-y-hidden  absolute  left-[${position.current.position.left + window.scrollX}] top-[${position.current.position.bottom + window.scrollY}]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg`}
@@ -47,7 +47,7 @@ export default function Options({
           <div className="w-full flex items-center justify-center">
             <button
               className="mt-2 text-sm mx-auto"
-              onClick={() => setShow((s) => false)}
+              onClick={() => setShow(false)}
             >
               Close
             </button>

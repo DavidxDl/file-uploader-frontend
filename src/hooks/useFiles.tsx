@@ -11,7 +11,7 @@ export default function useFiles(
     console.log("[Selecter folder]");
     console.log(selectedFolder);
     if (selectedFolder) {
-      setIsLoadingFiles((l) => true);
+      setIsLoadingFiles(true);
       if (selectedFolder !== "SHARE") {
         const res = await fetch(
           `http://localhost:3000/folders/${selectedFolder}`,
@@ -24,7 +24,7 @@ export default function useFiles(
 
         console.log(data);
 
-        setIsLoadingFiles((l) => false);
+        setIsLoadingFiles(false);
         setFiles(data);
       } else {
         //getting shared files
@@ -36,7 +36,7 @@ export default function useFiles(
 
         console.log(data);
 
-        setIsLoadingFiles((l) => false);
+        setIsLoadingFiles(false);
         setFiles(data);
       }
     }

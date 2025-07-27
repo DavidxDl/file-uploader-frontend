@@ -49,7 +49,9 @@ export default function FolderForm({ setFolders, folders }: Props) {
         value={folderName}
         onChange={(e) => setFolderName(e.target.value)}
       />
-      <button className="bg-green-500 text-sm mt-2">Create</button>
+      <button disabled={isLoading} className="bg-green-500 text-sm mt-2">
+        Create
+      </button>
     </form>
   );
 }

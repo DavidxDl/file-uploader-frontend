@@ -2,7 +2,6 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import Main from "../components/Main";
-import Header from "../components/Header";
 import Files from "../components/Files";
 
 export default function Dashboard() {

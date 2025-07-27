@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import useFolders from "../../hooks/useFolders";
 import { Folder } from "../Files";
 
 interface Props {

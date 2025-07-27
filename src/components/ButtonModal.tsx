@@ -18,7 +18,7 @@ export default function ButtonModal({
   const dropdownRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShow(false);
       }
@@ -44,7 +44,7 @@ export default function ButtonModal({
           <div className="w-full flex items-center justify-center">
             <button
               className="mt-2 text-sm mx-auto"
-              onClick={() => setShow((s) => false)}
+              onClick={() => setShow(false)}
             >
               Close
             </button>
