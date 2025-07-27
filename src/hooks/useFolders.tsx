@@ -12,7 +12,7 @@ export default function useFolders(): [
   async function getFolders() {
     try {
       setIsLoadingFolders(true);
-      const res = await fetch(`${process.env.BACKEND}/folders`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND}/folders`, {
         credentials: "include",
       });
 
