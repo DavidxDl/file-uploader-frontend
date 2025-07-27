@@ -32,10 +32,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        const response = await fetch("http://localhost:3000/get_user", {
-          method: "GET",
-          credentials: "include", // Important for sending cookies with the request
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND}/get_user`,
+          {
+            method: "GET",
+            credentials: "include", // Important for sending cookies with the request
+          },
+        );
 
         const data = await response.json();
 
