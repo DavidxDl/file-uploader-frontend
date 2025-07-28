@@ -1,22 +1,50 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { Folder } from "../Files";
 
 interface Props {
   folders: Folder[];
 }
+
 export default function FileForm({ folders }: Props) {
   const [selectedFolder, setSelectedFolder] = useState("Folder");
+  const [isUploading, setIsUploading] = useState(false);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsUploading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    const endpoint =
+      selectedFolder === "SHARE"
+        ? `${import.meta.env.VITE_BACKEND}/share/new`
+        : `${import.meta.env.VITE_BACKEND}/files/new`;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: formData,
+        credentials: "include", // This is the key part!
+      });
+
+      if (res.ok) {
+        // Handle success - maybe refresh the file list or show success message
+        console.log("File uploaded successfully");
+        // Reset form
+        e.currentTarget.reset();
+        setSelectedFolder("Folder");
+      } else {
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  }
 
   return (
-    <form
-      method="post"
-      action={
-        selectedFolder === "SHARE"
-          ? `${import.meta.env.VITE_BACKEND}/share/new`
-          : `${import.meta.env.VITE_BACKEND}/files/new`
-      }
-      encType="multipart/form-data"
-    >
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
       <fieldset>
         <label htmlFor="file">File:</label>
         <input type="file" name="file" id="file" required />
@@ -37,7 +65,9 @@ export default function FileForm({ folders }: Props) {
             </option>
           ))}
         </select>
-        <button className="mt-2">Upload</button>
+        <button className="mt-2" disabled={isUploading}>
+          {isUploading ? "Uploading..." : "Upload"}
+        </button>
       </fieldset>
     </form>
   );
