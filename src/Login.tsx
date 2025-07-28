@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useEffect, FormEvent } from "react";
+import { useState, useContext, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./contexts/UserContext";
 import { Eye, EyeOff, Upload, Lock, User } from "lucide-react";
