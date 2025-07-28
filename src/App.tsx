@@ -19,8 +19,8 @@ export default function App() {
 
   return (
     <>
-      <Header />
       <UserProvider>
+        <Header />
         <RouterProvider router={router} />
       </UserProvider>
     </>

@@ -15,6 +15,14 @@ export interface Folder {
   ownerId: string;
 }
 
+const formatFileSize = (bytes: number) => {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+};
+
 export interface File {
   id: string;
   name: string;
@@ -129,7 +137,7 @@ export default function Files() {
   }
   return (
     <div className="border border-white w-full max-w-4xl rounded-md p-7">
-      <dialog ref={previewRef} className="z-50 max-w-full">
+      <dialog ref={previewRef} className="z-50 inset-0">
         <button
           className="bg-red-600 absolute right-0 top-[-40px]"
           onClick={() => {
@@ -164,8 +172,7 @@ export default function Files() {
               <dt className="font-semibold">Size</dt>
               <dd>
                 {showFilePreview?.metadata.size &&
-                  Math.round(showFilePreview?.metadata.size / 1024)}
-                mb
+                  formatFileSize(showFilePreview.metadata.size)}
               </dd>
             </dl>
 
