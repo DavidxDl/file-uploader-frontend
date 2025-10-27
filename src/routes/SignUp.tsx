@@ -55,7 +55,7 @@ export default function Register() {
             name="username"
             id="username"
             value={username}
-            onChange={(e) => setUsername((u) => e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             className="valid:outline-1 outline-green-500 bg-white rounded-md px-2 text-sm text-black"
             required
           />
