@@ -189,35 +189,117 @@ export default function Files() {
           </div>
         )}
       </dialog>
-    <div className="border border-green-500 w-full max-w-4xl rounded-md p-7">
-      <div className="flex justify-between p-1 items-center">
-        <h2 className="text-xl font-bold">Folders</h2>
-        <div className="flex gap-2">
-          <ButtonModal buttonText="Rename Folder">
-            <RenameFolderForm folders={folders} setFolders={setFolders} />
-          </ButtonModal>
+      <div className="border border-green-500 w-full max-w-4xl rounded-md p-7">
+        <div className="flex justify-between p-1 items-center">
+          <h2 className="text-xl font-bold">Folders</h2>
+          <div className="flex gap-2">
+            <ButtonModal buttonText="Rename Folder">
+              <RenameFolderForm folders={folders} setFolders={setFolders} />
+            </ButtonModal>
 
-          <ButtonModal buttonText="Create Folder">
-            <FolderForm setFolders={setFolders} folders={folders} />
-          </ButtonModal>
+            <ButtonModal buttonText="Create Folder">
+              <FolderForm setFolders={setFolders} folders={folders} />
+            </ButtonModal>
+          </div>
         </div>
-      </div>
-      <div className="flex align-middle gap-2 max-w-full max-h-[200px] overflow-y-auto flex-wrap">
-        {isLoadingFolders && <div>Loading...</div>}
-        {!isLoadingFolders &&
-          folders.map((f) => (
-            <div
-              className={`flex p-5 transition rounded-xl cursor-pointer hover:bg-green-400 ${
-                selectedFolder === f.id ? "bg-green-500" : "bg-gray-700"
-              }`}
-              key={f.id}
-              onClick={() =>
-                setSelectedFolder(selectedFolder === f.id ? "" : f.id)
-              }
-            >
-              <FolderIcon />
-              <span>{f.name}</span>
-              {f.id !== "SHARE" && (
+        <div className="flex align-middle gap-2 max-w-full max-h-[200px] overflow-y-auto flex-wrap">
+          {isLoadingFolders && <div>Loading...</div>}
+          {!isLoadingFolders &&
+            folders.map((f) => (
+              <div
+                className={`flex p-5 transition rounded-xl cursor-pointer hover:bg-green-400 ${
+                  selectedFolder === f.id ? "bg-green-500" : "bg-gray-700"
+                }`}
+                key={f.id}
+                onClick={() =>
+                  setSelectedFolder(selectedFolder === f.id ? "" : f.id)
+                }
+              >
+                <FolderIcon />
+                <span>{f.name}</span>
+                {f.id !== "SHARE" && (
+                  <Options
+                    className="size-5 text-[.8rem] leading-[.3rem] ml-1 p-0 text-center"
+                    buttonText="⋮"
+                  >
+                    <ul>
+                      <li
+                        className="hover:bg-red-600 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
+                        onClick={() =>
+                          confirm(`you want to delete folder: ${f.name}`) &&
+                          deleteFolder(f.id, f.name)
+                        }
+                      >
+                        Delete
+                      </li>
+
+                      {
+                        <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
+                          Rename
+                        </li>
+                      }
+                    </ul>
+                  </Options>
+                )}
+                <ButtonModal buttonText=":" className="text-xs  ">
+                  <ul>
+                    <li>
+                      <a href="#">remove</a>
+                    </li>
+                  </ul>
+                </ButtonModal>
+              </div>
+            ))}
+        </div>
+        <div>
+          <div className="flex p-1 items-center justify-between">
+            <h2 className="text-xl font-bold">Files</h2>
+
+            <div>
+              <ButtonModal buttonText="Upload File">
+                <FileForm folders={folders} />
+              </ButtonModal>
+            </div>
+            <ButtonModal className="left-0" buttonText="+">
+              <form>
+                <fieldset>
+                  <label htmlFor="file">File:</label>
+                  <input type="file" name="file" id="file" />
+                </fieldset>
+                <fieldset className="flex flex-col">
+                  <label htmlFor="folder">Folder:</label>
+                  <select
+                    name="folder"
+                    id="folder"
+                    className="bg-gray-700 rounded-md py-1 text-white"
+                  >
+                    {folders.map((f) => (
+                      <option value={f.name}>{f.name}</option>
+                    ))}
+                  </select>
+                  <button className="mt-2">Upload</button>
+                </fieldset>
+              </form>
+            </ButtonModal>
+          </div>
+          {isLoadingFiles && <div>Loading...</div>}
+          {!isLoadingFiles && selectedFolder && !files.length && (
+            <span>Empty folder!</span>
+          )}
+          {!isLoadingFiles &&
+            selectedFolder &&
+            files.map((f) => (
+              <div key={f.id} className="flex ">
+                <a
+                  href="#"
+                  className="max-w-48 overflow-ellipsis overflow-x-hidden block"
+                  onClick={() => {
+                    setShowFilePreview(f);
+                    if (previewRef.current) previewRef.current.open = true;
+                  }}
+                >
+                  {f.name}
+                </a>
                 <Options
                   className="size-5 text-[.8rem] leading-[.3rem] ml-1 p-0 text-center"
                   buttonText="⋮"
@@ -226,117 +308,36 @@ export default function Files() {
                     <li
                       className="hover:bg-red-600 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
                       onClick={() =>
-                        confirm(`you want to delete folder: ${f.name}`) &&
-                        deleteFolder(f.id, f.name)
+                        confirm(`you want to delete file: ${f.name}`) &&
+                        deleteFile(f.id, f.name, selectedFolder)
                       }
                     >
                       Delete
                     </li>
+                    <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
+                      <a className="text-white" href={f.metadata.signedUrl}>
+                        Download
+                      </a>
+                    </li>
 
-                    {
-                      <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
-                        Rename
-                      </li>
-                    }
+                    <li
+                      className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
+                      onClick={() => {
+                        if (selectedFolder === "SHARE") {
+                          navigator.clipboard.writeText(f.metadata.signedUrl);
+                          return alert(`URL Copied`);
+                        }
+
+                        shareFile(selectedFolder, f.name);
+                      }}
+                    >
+                      {selectedFolder === "SHARE" ? "URL" : "Share"}
+                    </li>
                   </ul>
                 </Options>
-              )}
-              <ButtonModal buttonText=":" className="text-xs  ">
-                <ul>
-                  <li>
-                    <a href="#">remove</a>
-                  </li>
-                </ul>
-              </ButtonModal>
-            </div>
-          ))}
-      </div>
-      <div>
-        <div className="flex p-1 items-center justify-between">
-          <h2 className="text-xl font-bold">Files</h2>
-
-          <div>
-            <ButtonModal buttonText="Upload File">
-              <FileForm folders={folders} />
-            </ButtonModal>
-          </div>
-          <ButtonModal className="left-0" buttonText="+">
-            <form>
-              <fieldset>
-                <label htmlFor="file">File:</label>
-                <input type="file" name="file" id="file" />
-              </fieldset>
-              <fieldset className="flex flex-col">
-                <label htmlFor="folder">Folder:</label>
-                <select
-                  name="folder"
-                  id="folder"
-                  className="bg-gray-700 rounded-md py-1 text-white"
-                >
-                  {folders.map((f) => (
-                    <option value={f.name}>{f.name}</option>
-                  ))}
-                </select>
-                <button className="mt-2">Upload</button>
-              </fieldset>
-            </form>
-          </ButtonModal>
+              </div>
+            ))}
         </div>
-        {isLoadingFiles && <div>Loading...</div>}
-        {!isLoadingFiles && selectedFolder && !files.length && (
-          <span>Empty folder!</span>
-        )}
-        {!isLoadingFiles &&
-          selectedFolder &&
-          files.map((f) => (
-            <div key={f.id} className="flex ">
-              <a
-                href="#"
-                className="max-w-48 overflow-ellipsis overflow-x-hidden block"
-                onClick={() => {
-                  setShowFilePreview(f);
-                  if (previewRef.current) previewRef.current.open = true;
-                }}
-              >
-                {f.name}
-              </a>
-              <Options
-                className="size-5 text-[.8rem] leading-[.3rem] ml-1 p-0 text-center"
-                buttonText="⋮"
-              >
-                <ul>
-                  <li
-                    className="hover:bg-red-600 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
-                    onClick={() =>
-                      confirm(`you want to delete file: ${f.name}`) &&
-                      deleteFile(f.id, f.name, selectedFolder)
-                    }
-                  >
-                    Delete
-                  </li>
-                  <li className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold">
-                    <a className="text-white" href={f.metadata.signedUrl}>
-                      Download
-                    </a>
-                  </li>
-
-                  <li
-                    className="hover:bg-green-500 transition border-b border-b-green-500 cursor-pointer rounded px-4 py-2 text-center font-extrabold"
-                    onClick={() => {
-                      if (selectedFolder === "SHARE") {
-                        navigator.clipboard.writeText(f.metadata.signedUrl);
-                        return alert(`URL Copied`);
-                      }
-
-                      shareFile(selectedFolder, f.name);
-                    }}
-                  >
-                    {selectedFolder === "SHARE" ? "URL" : "Share"}
-                  </li>
-                </ul>
-              </Options>
-            </div>
-          ))}
       </div>
     </div>
   );

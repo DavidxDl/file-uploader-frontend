@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import "../index.css";
 
 interface Props {
   shouldShow?: boolean;
   buttonText: string;
   className?: string;
   children: React.ReactNode;
-  className: string;
 }
 
 export default function ButtonModal({
@@ -31,25 +29,6 @@ export default function ButtonModal({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [show]);
-
-  return (
-    <div className="relative">
-      <button
-        className={`text-xs md:text-lg ${className}`}
-        onClick={() => setShow((s) => !s)}
-      >
-        {buttonText}
-      </button>
-      {show && (
-        <div
-          ref={dropdownRef}
-          className="shadow roll z-50  absolute top-0 right-[-10px]  rounded-md border border-green-500 bg-transparent backdrop-blur-lg p-5"
-        >
-  buttonText,
-  className,
-  children,
-}: Props) {
-  const [show, setShow] = useState(false);
 
   return (
     <div className="relative ml-3">

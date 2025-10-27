@@ -142,6 +142,9 @@ export default function Login() {
         </div>
 
         {/* Footer */}
+        <span>
+          Yout dont have an Account? <a href="/sign-up">Sign up</a>
+        </span>
         <div className="text-center mt-6 text-gray-400 text-sm">
           Secure file management at your fingertips
         </div>
