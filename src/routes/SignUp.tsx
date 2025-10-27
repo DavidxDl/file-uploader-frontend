@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import Main from "../components/Main";
 import Form from "../components/Form";
 import InputPassword from "../components/InputPassword";
@@ -43,9 +43,6 @@ export default function Register() {
       return console.error(error);
     } finally {
       setIsLoading(false);
-      if (data.errors) {
-        setErrors(data.errors);
-      }
     }
   }
   return (
